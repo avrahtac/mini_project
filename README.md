@@ -19,7 +19,7 @@ To run this project, you will need Python 3 and a running MySQL server.
 1.  **Clone the Repository:**
     ```bash
     git clone [https://github.com/atharvachitale765/dbms_project.git](https://github.com/atharvachitale765/dbms_project.git)
-    cd your-repo-name
+    cd dbms_project
     ```
 
 2.  **Setup the Backend Database:**
