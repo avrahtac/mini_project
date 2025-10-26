@@ -3,6 +3,7 @@ from tkinter import ttk, messagebox
 import mysql.connector  # Import the MySQL connector
 import datetime
 import random
+import re
 
 # =====================================================================
 #  PART 1: DATABASE CONFIGURATION
@@ -163,6 +164,24 @@ class AirlineApp(tk.Tk):
             messagebox.showerror("Error", "Please fill in Name, Email, and select a Flight.")
             return
 
+        # --- START OF NEW VALIDATION ---
+        
+        # 1. Check Email Format (basic check)
+        # This regex checks for something@something.something
+        email_regex = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+        if not re.match(email_regex, email):
+            messagebox.showerror("Invalid Format", "Please enter a valid email address (e.g., name@example.com).")
+            return
+
+        # 2. Check Phone Format (simple 10-digit check)
+        # This regex checks for exactly 10 digits.
+        phone_regex = r'^\d{10}$'
+        if not re.match(phone_regex, phone):
+            messagebox.showerror("Invalid Format", "Please enter a 10-digit phone number (e.g., 9876543210).")
+            return
+            
+        # --- END OF NEW VALIDATION ---
+
         try:
             schedule_id = int(selected_flight_str.split(':')[0].replace('ID', '').strip())
         except:
@@ -185,7 +204,6 @@ class AirlineApp(tk.Tk):
                 cursor.execute("INSERT INTO User(Name, Email, Phone) VALUES (%s, %s, %s)", (name, email, phone))
                 user_id = cursor.lastrowid
             
-            # --- START OF FIX ---
             # Step B: Check if the seat is already taken ON THIS FLIGHT
             cursor.execute(
                 "SELECT BookingID FROM Booking WHERE ScheduleID = %s AND Seat = %s", 
@@ -201,7 +219,6 @@ class AirlineApp(tk.Tk):
                 )
                 conn.rollback() # Cancel any changes (like the new user)
                 return # Stop the booking process
-            # --- END OF FIX ---
 
             # Step C: Create the Booking (This code now only runs if the seat is free)
             booking_time = datetime.datetime.now()
@@ -240,7 +257,7 @@ class AirlineApp(tk.Tk):
                 cursor.close()
             if conn:
                 conn.close()
-
+                
     def on_search_booking(self):
         booking_id = self.search_id_entry.get()
         if not booking_id:
