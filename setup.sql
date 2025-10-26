@@ -1,4 +1,4 @@
---Tested and verified by <avrahtac> on MySQL Workbench 8.0 CE (Microsoft Windows 11 72D29E7D-F4C6-427B-B4EE-FF314F8F9741)
+--Tested and verified by <avrahtac> on MySQL Workbench 8.0 CE (Microsoft Windows 11 Pro 72D29E7D-F4C6-427B-B4EE-FF314F8F9741)
 
 CREATE DATABASE IF NOT EXISTS airline_db;
 
